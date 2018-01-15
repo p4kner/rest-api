@@ -2,7 +2,7 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 import MySQLdb
 from json import dumps
-from flask.ext.jsonpify import jsonify
+from flask_jsonpify import jsonify
 
 
 # Connect to the database.
