@@ -18,14 +18,14 @@ api = Api(app)
 class Employees(Resource):
     def get(self):
         conn = db_connect.connect()
-        query = conn.execute('select * from employees')
+        query = conn.execute('SELECT * FROM employees')
         return {'employees': [i[0] for i in query.cursor.fetchall()]}
 
 
 class Tracks(Resource):
     def get(self):
         conn = db_connect.connect()
-        query = conn.execute('select trackid, name, composer, unitprice from tracks;')
+        query = conn.execute('SELECT trackid, name, composer, unitprice FROM tracks;')
         result = {'data': [dict(zip(tuple(query.keys()), i)) for i in query.cursor]}
         return jsonify(result)
 
@@ -33,14 +33,25 @@ class Tracks(Resource):
 class Employees_Name(Resource):
     def get(self, employee_id):
         conn = db_connect.connect()
-        query = conn.execute('select * from employees where EmployeeId =%d ' % int(employee_id))
+        query = conn.execute('SELECT * FROM employees WHERE EmployeeId =%d ' % int(employee_id))
         result = {'data': [dict(zip(tuple(query.keys()), i)) for i in query.cursor]}
         return jsonify(result)
+
+# Add data to db.
+class Newbie(Resource):
+    def get(self):
+        return 'get request was sent - no entry was made. Please use post.'
+    def post(self):
+        conn = db_connect.connect()
+        query = conn.execute('INSERT INTO employees(FirstName, LastName, Title) VALUES (\'Jason\', \'DeRulo\', \'Producer\')')
+        return 'POST REQUEST WAS SENT - database entry was added.'
+
 
 
 api.add_resource(Employees, '/employees')
 api.add_resource(Tracks, '/tracks')
 api.add_resource(Employees_Name, '/employees/<employee_id>')
+api.add_resource(Newbie, '/newbie') # Post to flask.
 
 if __name__ == '__main__':
     app.run(port=5002)
