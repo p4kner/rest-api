@@ -6,7 +6,8 @@ Activate the virtual environment and the run the server.py script. The API proto
 https://localhost:port/api-command i.e. https://127.0.0.1:5002/contents
 
 Alternatly, requests (GET, POST etc.) can be sent easily from the terminal using curl.
-POST: curl -X POST http://127.0.0.1:5002/submit
+POST: curl -X POST -H "Content-Type: application/json" -d '{"username":"HenryW", "password":"iwatchsuits"}' http://127.0.0.1:5002/submit
+
 
 # Database
 Database used is scraper_db.

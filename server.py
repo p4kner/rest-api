@@ -1,5 +1,5 @@
 from flask import Flask, request
-from flask_restful import Resource, Api
+from flask_restful import Resource, Api, reqparse, abort
 import MySQLdb
 from json import dumps
 from flask_jsonpify import jsonify
@@ -42,10 +42,18 @@ class Submit(Resource):
     def get(self):
         return 'get request was sent - no entry was made. Please use post.'
     def post(self):
-        cursor = db.cursor()
-        query = cursor.execute('INSERT INTO contents(title, contents) VALUES (\'Super Headline\', \'This is some quality content here.\')')
-        db.commit()
-        return 'POST REQUEST WAS SENT - database entry was added.'
+        # Get POST data as JSon.
+        # What about the mimetype?
+        json_data = request.get_json(force=True)
+        un = json_data['username']
+        pw = json_data['password']
+        return jsonify(u=un, p=pw)
+
+
+        #cursor = db.cursor()
+        #query = cursor.execute('INSERT INTO contents(title, contents) VALUES (\'Super Headline\', \'This is some quality content here.\')')
+        #db.commit()
+        #return 'POST REQUEST WAS SENT - database entry was added.'
 
 
 api.add_resource(Contents, '/contents')
